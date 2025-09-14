@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+langchain
+langchain-openai
+langchain-core
+openai
+python-dotenv
+line-bot-sdk
+pydantic
