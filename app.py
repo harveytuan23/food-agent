@@ -7,7 +7,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 
-from parser_chain import parse_text_to_ingredient
+from agent import food_agent
 
 # Setup logging
 logging.basicConfig(
@@ -60,23 +60,36 @@ async def line_webhook(request: Request):
                 logger.info("🏓 收到 ping 命令，回覆 pong")
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text="pong ✅ Connected"))
                 continue
+            
+            if text_in.lower() == "help" or text_in.lower() == "幫助":
+                logger.info("📋 用戶請求幫助資訊")
+                help_text = (
+                    "🤖 智能食物管理助手\n\n"
+                    "我可以幫助你：\n"
+                    "• 管理食材庫存\n"
+                    "• 添加食材到庫存\n"
+                    "• 查看食材列表\n"
+                    "• 檢查即將過期的食材\n"
+                    "• 刪除食材\n\n"
+                    "試試說：「我想添加牛奶到庫存」或「查看食材庫存」"
+                )
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=help_text))
+                continue
+            
+            if text_in.lower() == "tools" or text_in.lower() == "工具":
+                logger.info("🛠️ 用戶請求工具列表")
+                tools_info = food_agent.get_available_tools_info()
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text=tools_info))
+                continue
 
             try:
-                logger.info("🚀 開始解析用戶輸入...")
-                parsed = parse_text_to_ingredient(text_in)
-                reply = (
-                    f"解析結果：\n"
-                    f"- 名稱: {parsed.name}\n"
-                    f"- 數量: {parsed.quantity}\n"
-                    f"- 單位: {parsed.unit}\n"
-                    f"- 到期日: {parsed.expires_at}\n"
-                    f"- 存放位置: {parsed.location}\n"
-                    f"- 備註: {parsed.notes}"
-                )
-                logger.info(f"📤 回覆用戶: {reply[:100]}...")
+                logger.info("🚀 Agent 開始處理用戶輸入...")
+                # 使用 Agent 處理用戶輸入
+                reply = food_agent.process_user_message(text_in)
+                logger.info(f"📤 Agent 回覆用戶: {reply[:100]}...")
             except Exception as e:
-                reply = f"❌ 解析失敗，請用更明確的格式輸入。\n錯誤: {str(e)}"
-                logger.error(f"❌ 解析失敗: {str(e)}")
+                reply = f"❌ 處理失敗，請稍後再試。\n錯誤: {str(e)}"
+                logger.error(f"❌ Agent 處理失敗: {str(e)}")
 
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 

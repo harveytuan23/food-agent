@@ -5,6 +5,10 @@
 .env.test.local
 .env.production.local
 
+# Google Service Account
+service-account-key.json
+google-service-account.json
+
 # Python
 __pycache__/
 *.py[cod]
