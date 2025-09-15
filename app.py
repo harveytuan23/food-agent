@@ -1,6 +1,7 @@
 # app.py
 import os
 import logging
+from datetime import datetime
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request, HTTPException
 from linebot import LineBotApi, WebhookParser
@@ -8,6 +9,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 
 from agent import food_agent
+from tools import check_expiring_ingredients
 
 # Setup logging
 logging.basicConfig(
@@ -35,6 +37,31 @@ app = FastAPI()
 @app.get("/healthz")
 def healthz():
     return {"ok": True}
+
+@app.get("/api/expiring-ingredients")
+async def get_expiring_ingredients():
+    """API 端點：獲取即將過期的食材列表，供 n8n 調用"""
+    try:
+        logger.info("🔍 n8n 請求檢查過期食材")
+        result = check_expiring_ingredients()
+        
+        # 解析結果，判斷是否有過期食材
+        has_expiring = "沒有即將過期的食材" not in result
+        
+        return {
+            "success": True,
+            "has_expiring": has_expiring,
+            "message": result,
+            "timestamp": datetime.now().isoformat() + "Z"
+        }
+    except Exception as e:
+        logger.error(f"❌ 檢查過期食材失敗: {str(e)}")
+        return {
+            "success": False,
+            "has_expiring": False,
+            "message": f"檢查失敗: {str(e)}",
+            "timestamp": datetime.now().isoformat() + "Z"
+        }
 
 @app.post("/line/webhook")
 async def line_webhook(request: Request):
