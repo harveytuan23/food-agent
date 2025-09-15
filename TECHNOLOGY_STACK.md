@@ -1,14 +1,14 @@
-# 🛠️ 技術架構文檔
+# 🛠️ Technical Architecture Documentation
 
-## 專案概述
-智能食物管理助手是一個基於 AI 的食材庫存管理系統，整合了多種現代技術來提供智能化的食材管理體驗。
+## Project Overview
+The Smart Food Management Assistant is an AI-powered ingredient inventory management system that integrates multiple modern technologies to provide an intelligent food management experience.
 
-## 🏗️ 整體架構
+## 🏗️ Overall Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   LINE Bot      │    │   FastAPI       │    │   Google Sheets │
-│   (用戶界面)     │◄──►│   (API 服務)     │◄──►│   (數據存儲)     │
+│   (User Interface)│◄──►│   (API Service) │◄──►│   (Data Storage)│
 └─────────────────┘    └─────────────────┘    └─────────────────┘
                               │
                               ▼
@@ -24,67 +24,67 @@
                        └─────────────────┘
 ```
 
-## 🔧 核心技術棧
+## 🔧 Core Technology Stack
 
-### 1. 後端框架
-- **FastAPI** - 現代化的 Python Web 框架
-  - 高性能異步處理
-  - 自動 API 文檔生成
-  - 類型提示支持
-  - 內建數據驗證
+### 1. Backend Framework
+- **FastAPI** - Modern Python Web Framework
+  - High-performance asynchronous processing
+  - Automatic API documentation generation
+  - Type hint support
+  - Built-in data validation
 
-### 2. AI 與機器學習
-- **LangChain** - AI 應用開發框架
-  - Agent 系統管理
-  - 工具鏈整合
-  - 提示詞模板管理
-  - 輸出解析器
+### 2. AI & Machine Learning
+- **LangChain** - AI Application Development Framework
+  - Agent system management
+  - Tool chain integration
+  - Prompt template management
+  - Output parsers
 
-- **OpenAI GPT-4o-mini** - 大型語言模型
-  - 自然語言理解
-  - 智能決策制定
-  - 工具調用能力
-  - 上下文記憶
+- **OpenAI GPT-4o-mini** - Large Language Model
+  - Natural language understanding
+  - Intelligent decision making
+  - Tool calling capabilities
+  - Context memory
 
-### 3. 數據存儲
-- **Google Sheets API** - 雲端表格服務
-  - 實時數據同步
-  - 自動備份
-  - 協作功能
-  - 版本控制
+### 3. Data Storage
+- **Google Sheets API** - Cloud Spreadsheet Service
+  - Real-time data synchronization
+  - Automatic backup
+  - Collaboration features
+  - Version control
 
-### 4. 通訊與通知
-- **LINE Messaging API** - 即時通訊平台
-  - 用戶互動界面
-  - 推送通知
-  - 富媒體支持
-  - 群組管理
+### 4. Communication & Notifications
+- **LINE Messaging API** - Instant Messaging Platform
+  - User interaction interface
+  - Push notifications
+  - Rich media support
+  - Group management
 
-- **n8n** - 工作流程自動化
-  - 定時任務調度
-  - API 整合
-  - 條件邏輯處理
-  - 多平台通知
+- **n8n** - Workflow Automation
+  - Scheduled task execution
+  - API integration
+  - Conditional logic processing
+  - Multi-platform notifications
 
-## 📚 開發工具與庫
+## 📚 Development Tools & Libraries
 
-### Python 核心庫
+### Python Core Libraries
 ```python
-# Web 框架
+# Web Framework
 fastapi==0.104.1
 uvicorn==0.24.0
 
-# AI 與機器學習
+# AI & Machine Learning
 langchain==0.1.0
 langchain-openai==0.0.2
 langchain-core==0.1.0
 openai==1.3.0
 
-# 數據處理
+# Data Processing
 pydantic==2.5.0
 python-dotenv==1.0.0
 
-# Google 服務
+# Google Services
 google-auth==2.23.0
 google-auth-oauthlib==1.1.0
 google-auth-httplib2==0.1.1
@@ -94,211 +94,211 @@ gspread==5.12.0
 # LINE Bot
 line-bot-sdk==3.5.0
 
-# HTTP 請求
+# HTTP Requests
 httpx==0.25.0
 requests==2.31.0
 
-# 日誌與監控
+# Logging & Monitoring
 logging
 datetime
 ```
 
-### 開發環境工具
-- **Python 3.11+** - 程式語言
-- **pip** - 套件管理
-- **venv** - 虛擬環境
-- **Git** - 版本控制
+### Development Environment Tools
+- **Python 3.11+** - Programming Language
+- **pip** - Package Management
+- **venv** - Virtual Environment
+- **Git** - Version Control
 
-## 🔄 系統流程
+## 🔄 System Flow
 
-### 1. 用戶互動流程
+### 1. User Interaction Flow
 ```
-用戶發送訊息 → LINE Bot → FastAPI → LangChain Agent → 工具調用 → Google Sheets → 回應用戶
-```
-
-### 2. 自動化通知流程
-```
-定時觸發器 → n8n → API 調用 → 檢查過期食材 → 發送通知 → LINE 用戶
+User sends message → LINE Bot → FastAPI → LangChain Agent → Tool calls → Google Sheets → Response to user
 ```
 
-### 3. 數據處理流程
+### 2. Automated Notification Flow
 ```
-用戶輸入 → 文字解析 → 結構化數據 → Google Sheets 存儲 → 實時同步
+Scheduled trigger → n8n → API call → Check expiring ingredients → Send notification → LINE user
 ```
 
-## 🏛️ 架構模式
+### 3. Data Processing Flow
+```
+User input → Text parsing → Structured data → Google Sheets storage → Real-time sync
+```
 
-### 1. Agent 模式
-- **智能代理**: LangChain Agent 作為核心決策引擎
-- **工具調用**: 動態選擇和執行適當的工具
-- **狀態管理**: 維護對話上下文和記憶
+## 🏛️ Architecture Patterns
 
-### 2. 微服務架構
-- **API 服務**: FastAPI 提供 RESTful API
-- **數據服務**: Google Sheets 作為數據層
-- **通知服務**: LINE 和 n8n 處理通知
+### 1. Agent Pattern
+- **Intelligent Agent**: LangChain Agent as core decision engine
+- **Tool Calling**: Dynamic selection and execution of appropriate tools
+- **State Management**: Maintain conversation context and memory
 
-### 3. 事件驅動架構
-- **Webhook**: LINE Bot 事件處理
-- **定時任務**: n8n 工作流程調度
-- **異步處理**: FastAPI 異步請求處理
+### 2. Microservices Architecture
+- **API Service**: FastAPI provides RESTful API
+- **Data Service**: Google Sheets as data layer
+- **Notification Service**: LINE and n8n handle notifications
 
-## 🔐 安全與認證
+### 3. Event-Driven Architecture
+- **Webhook**: LINE Bot event handling
+- **Scheduled Tasks**: n8n workflow scheduling
+- **Asynchronous Processing**: FastAPI async request processing
 
-### 1. API 安全
-- **環境變數**: 敏感信息加密存儲
-- **簽名驗證**: LINE Webhook 簽名驗證
-- **錯誤處理**: 完整的異常處理機制
+## 🔐 Security & Authentication
 
-### 2. 數據安全
-- **Google OAuth**: 服務帳戶認證
-- **權限控制**: 最小權限原則
-- **數據加密**: 傳輸和存儲加密
+### 1. API Security
+- **Environment Variables**: Encrypted storage of sensitive information
+- **Signature Verification**: LINE Webhook signature verification
+- **Error Handling**: Complete exception handling mechanism
 
-### 3. 訪問控制
-- **API 限制**: 請求頻率限制
-- **用戶驗證**: LINE 用戶身份驗證
-- **日誌記錄**: 完整的操作日誌
+### 2. Data Security
+- **Google OAuth**: Service account authentication
+- **Access Control**: Principle of least privilege
+- **Data Encryption**: Transport and storage encryption
 
-## 📊 數據模型
+### 3. Access Control
+- **API Limits**: Request rate limiting
+- **User Authentication**: LINE user identity verification
+- **Logging**: Complete operation logs
 
-### 1. 食材數據結構
+## 📊 Data Models
+
+### 1. Ingredient Data Structure
 ```python
 class IngredientInfo(BaseModel):
-    name: str                    # 食材名稱
-    quantity: float | None       # 數量
-    unit: str | None            # 單位
-    expires_at: str | None      # 到期日
-    location: str | None        # 存放位置
-    notes: str | None           # 備註
+    name: str                    # Ingredient name
+    quantity: float | None       # Quantity
+    unit: str | None            # Unit
+    expires_at: str | None      # Expiration date
+    location: str | None        # Storage location
+    notes: str | None           # Notes
 ```
 
-### 2. Google Sheets 結構
+### 2. Google Sheets Structure
 ```
-| ID | 名稱 | 數量 | 單位 | 到期日 | 存放位置 | 備註 | 創建時間 | 更新時間 |
+| ID | Name | Quantity | Unit | Expiration Date | Storage Location | Notes | Created Time | Updated Time |
 ```
 
-### 3. API 回應格式
+### 3. API Response Format
 ```json
 {
   "success": true,
   "has_expiring": true,
-  "message": "過期提醒內容",
+  "message": "Expiration reminder content",
   "timestamp": "2025-09-14T12:00:00Z"
 }
 ```
 
-## 🚀 部署與運維
+## 🚀 Deployment & Operations
 
-### 1. 本地開發
+### 1. Local Development
 ```bash
-# 環境設置
+# Environment Setup
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# 啟動服務
+# Start Service
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 2. 生產環境
-- **容器化**: Docker 支持
-- **負載均衡**: 多實例部署
-- **監控**: 日誌和指標收集
-- **備份**: 自動數據備份
+### 2. Production Environment
+- **Containerization**: Docker support
+- **Load Balancing**: Multi-instance deployment
+- **Monitoring**: Log and metrics collection
+- **Backup**: Automatic data backup
 
 ### 3. CI/CD
-- **版本控制**: Git 工作流
-- **自動測試**: 單元測試和整合測試
-- **部署**: 自動化部署流程
+- **Version Control**: Git workflow
+- **Automated Testing**: Unit tests and integration tests
+- **Deployment**: Automated deployment process
 
-## 🔧 工具與服務
+## 🔧 Tools & Services
 
-### 1. 開發工具
+### 1. Development Tools
 - **IDE**: VS Code, PyCharm
-- **API 測試**: Postman, curl
-- **數據庫管理**: Google Sheets Web UI
-- **日誌分析**: 內建日誌系統
+- **API Testing**: Postman, curl
+- **Database Management**: Google Sheets Web UI
+- **Log Analysis**: Built-in logging system
 
-### 2. 第三方服務
-- **OpenAI API**: AI 模型服務
-- **Google Cloud**: 表格和認證服務
-- **LINE Platform**: 通訊和通知服務
-- **n8n**: 工作流程自動化
+### 2. Third-party Services
+- **OpenAI API**: AI model service
+- **Google Cloud**: Spreadsheet and authentication services
+- **LINE Platform**: Communication and notification services
+- **n8n**: Workflow automation
 
-### 3. 監控與分析
-- **應用日誌**: 結構化日誌記錄
-- **錯誤追蹤**: 異常處理和報告
-- **性能監控**: 響應時間和吞吐量
-- **使用統計**: 用戶行為分析
+### 3. Monitoring & Analytics
+- **Application Logs**: Structured log recording
+- **Error Tracking**: Exception handling and reporting
+- **Performance Monitoring**: Response time and throughput
+- **Usage Statistics**: User behavior analysis
 
-## 📈 擴展性設計
+## 📈 Scalability Design
 
-### 1. 水平擴展
-- **無狀態設計**: 服務間無依賴
-- **負載均衡**: 多實例部署
-- **數據分片**: Google Sheets 分區
+### 1. Horizontal Scaling
+- **Stateless Design**: No dependencies between services
+- **Load Balancing**: Multi-instance deployment
+- **Data Sharding**: Google Sheets partitioning
 
-### 2. 功能擴展
-- **插件架構**: 工具模組化設計
-- **API 版本控制**: 向後兼容
-- **配置管理**: 環境變數配置
+### 2. Feature Extension
+- **Plugin Architecture**: Modular tool design
+- **API Version Control**: Backward compatibility
+- **Configuration Management**: Environment variable configuration
 
-### 3. 性能優化
-- **快取機制**: 本地數據快取
-- **異步處理**: 非阻塞操作
-- **連接池**: 數據庫連接優化
+### 3. Performance Optimization
+- **Caching Mechanism**: Local data caching
+- **Asynchronous Processing**: Non-blocking operations
+- **Connection Pooling**: Database connection optimization
 
-## 🔮 未來技術規劃
+## 🔮 Future Technology Roadmap
 
-### 1. 短期目標
-- **數據分析**: 食材使用模式分析
-- **預測功能**: 過期時間預測
-- **多語言支持**: 國際化支持
+### 1. Short-term Goals
+- **Data Analytics**: Ingredient usage pattern analysis
+- **Prediction Features**: Expiration time prediction
+- **Multi-language Support**: Internationalization support
 
-### 2. 中期目標
-- **機器學習**: 智能推薦系統
-- **圖像識別**: 食材圖片識別
-- **語音交互**: 語音指令支持
+### 2. Medium-term Goals
+- **Machine Learning**: Intelligent recommendation system
+- **Image Recognition**: Ingredient image recognition
+- **Voice Interaction**: Voice command support
 
-### 3. 長期目標
-- **IoT 整合**: 智能冰箱連接
-- **區塊鏈**: 食品安全追溯
-- **AR/VR**: 虛擬廚房體驗
+### 3. Long-term Goals
+- **IoT Integration**: Smart refrigerator connection
+- **Blockchain**: Food safety traceability
+- **AR/VR**: Virtual kitchen experience
 
-## 📝 技術決策記錄
+## 📝 Technical Decision Records
 
-### 1. 為什麼選擇 FastAPI？
-- 高性能異步處理
-- 自動 API 文檔生成
-- 現代化的 Python 特性支持
-- 活躍的社區和生態系統
+### 1. Why FastAPI?
+- High-performance asynchronous processing
+- Automatic API documentation generation
+- Modern Python feature support
+- Active community and ecosystem
 
-### 2. 為什麼選擇 LangChain？
-- 成熟的 AI Agent 框架
-- 豐富的工具生態
-- 良好的 OpenAI 整合
-- 靈活的提示詞管理
+### 2. Why LangChain?
+- Mature AI Agent framework
+- Rich tool ecosystem
+- Excellent OpenAI integration
+- Flexible prompt management
 
-### 3. 為什麼選擇 Google Sheets？
-- 無需額外數據庫設置
-- 實時協作功能
-- 自動備份和版本控制
-- 易於查看和編輯
+### 3. Why Google Sheets?
+- No additional database setup required
+- Real-time collaboration features
+- Automatic backup and version control
+- Easy to view and edit
 
-### 4. 為什麼選擇 LINE？
-- 在台灣的高普及率
-- 豐富的 API 功能
-- 良好的用戶體驗
-- 穩定的服務品質
+### 4. Why LINE?
+- High penetration rate in Taiwan
+- Rich API functionality
+- Excellent user experience
+- Stable service quality
 
 ---
 
-## 📞 技術支援
+## 📞 Technical Support
 
-如有技術問題，請參考：
-- [FastAPI 官方文檔](https://fastapi.tiangolo.com/)
-- [LangChain 官方文檔](https://python.langchain.com/)
-- [Google Sheets API 文檔](https://developers.google.com/sheets/api)
-- [LINE Messaging API 文檔](https://developers.line.biz/en/docs/messaging-api/)
-- [n8n 官方文檔](https://docs.n8n.io/)
+For technical issues, please refer to:
+- [FastAPI Official Documentation](https://fastapi.tiangolo.com/)
+- [LangChain Official Documentation](https://python.langchain.com/)
+- [Google Sheets API Documentation](https://developers.google.com/sheets/api)
+- [LINE Messaging API Documentation](https://developers.line.biz/en/docs/messaging-api/)
+- [n8n Official Documentation](https://docs.n8n.io/)

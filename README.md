@@ -1,44 +1,45 @@
-# 🤖 智能食物管理助手
+# 🤖 Smart Food Management Assistant
 
-一個基於 LangChain 和 OpenAI 的智能食物管理 AI Agent，專注於食材庫存管理，支援 Google Sheets 整合和自動化通知。
+An AI-powered food management system based on LangChain and OpenAI, focused on ingredient inventory management with Google Sheets integration and automated notifications.
 
-## ✨ 核心功能
+## ✨ Core Features
 
-### 🥬 食材管理
-- **添加食材**: 智能解析食材資訊並存儲到 Google Sheets
-- **查看庫存**: 顯示所有食材的庫存狀況
-- **檢查過期**: 提醒即將過期的食材（3天內）
-- **減少數量**: 使用食材時自動減少庫存
-- **刪除食材**: 完全移除不需要的食材
+### 🥬 Ingredient Management
+- **Add Ingredients**: Intelligently parse ingredient information and store in Google Sheets
+- **View Inventory**: Display all ingredient inventory status
+- **Check Expiration**: Remind about ingredients expiring soon (within 3 days)
+- **Reduce Quantity**: Automatically reduce inventory when using ingredients
+- **Delete Ingredients**: Completely remove unwanted ingredients
+- **Update Ingredients**: Modify ingredient information (name, quantity, unit, expiration date, storage location)
 
-### 🔄 自動化通知
-- **每日檢查**: 自動檢查即將過期的食材
-- **LINE 通知**: 通過 LINE Messaging API 發送提醒
-- **n8n 整合**: 支援 n8n 工作流程自動化
+### 🔄 Automated Notifications
+- **Daily Check**: Automatically check for expiring ingredients
+- **LINE Notifications**: Send reminders via LINE Messaging API
+- **n8n Integration**: Support n8n workflow automation
 
-### 📊 數據存儲
-- **Google Sheets**: 所有食材數據存儲在 Google Sheets
-- **實時同步**: 本地快取與雲端數據同步
-- **備份安全**: 數據自動備份到 Google Drive
+### 📊 Data Storage
+- **Google Sheets**: All ingredient data stored in Google Sheets
+- **Real-time Sync**: Local cache synchronized with cloud data
+- **Backup Security**: Data automatically backed up to Google Drive
 
-## 🛠️ 技術架構
+## 🛠️ Technical Architecture
 
-- **AI Agent**: LangChain Agent 系統
+- **AI Agent**: LangChain Agent system
 - **LLM**: OpenAI GPT-4o-mini
-- **框架**: FastAPI + LINE Bot SDK
-- **存儲**: Google Sheets API
-- **自動化**: n8n 工作流程
-- **通知**: LINE Messaging API
+- **Framework**: FastAPI + LINE Bot SDK
+- **Storage**: Google Sheets API
+- **Automation**: n8n workflows
+- **Notifications**: LINE Messaging API
 
-## 📦 快速開始
+## 📦 Quick Start
 
-### 1. 安裝依賴
+### 1. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. 環境變數設定
-創建 `.env` 檔案：
+### 2. Environment Variables Setup
+Create `.env` file:
 ```env
 # OpenAI
 OPENAI_API_KEY=your_openai_api_key_here
@@ -53,138 +54,147 @@ GOOGLE_SHEET_NAME=your_sheet_name
 GOOGLE_WORKSHEET_NAME=ingredients
 ```
 
-### 3. 設置 Google Sheets
-參考 [Google Sheets 設置指南](GOOGLE_SHEETS_SETUP.md)
+### 3. Setup Google Sheets
+Refer to [Google Sheets Setup Guide](GOOGLE_SHEETS_SETUP.md)
 
-### 4. 啟動服務
+### 4. Start Service
 ```bash
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## 🚀 使用方式
+## 🚀 Usage
 
-### LINE Bot 指令
-- `ping` - 測試連線
-- `help` 或 `幫助` - 顯示幫助資訊
-- `tools` 或 `工具` - 顯示可用工具列表
+### LINE Bot Commands
+- `ping` - Test connection
+- `help` or `幫助` - Show help information
+- `tools` or `工具` - Show available tools list
 
-### 自然語言指令
+### Natural Language Commands
 ```
-查看食材庫存
-添加牛奶 500ml 明天到期 冷藏
-檢查即將過期的食材
-減少蘋果 2個
-刪除過期的香蕉
+View ingredient inventory
+Add milk 500ml expires tomorrow store in refrigerator
+Check expiring ingredients
+Reduce apples by 2
+Delete expired bananas
+Update milk quantity to 1000ml
 ```
 
-## 🔧 可用工具
+## 🔧 Available Tools
 
-### 食材管理工具
-- `add_ingredient` - 添加食材到庫存
-- `get_ingredient_list` - 獲取食材庫存列表
-- `check_expiring_ingredients` - 檢查即將過期的食材
-- `delete_ingredient` - 完全刪除食材項目
-- `reduce_ingredient_quantity` - 減少食材數量
+### Ingredient Management Tools
+- `add_ingredient` - Add ingredients to inventory
+- `get_ingredient_list` - Get ingredient inventory list
+- `check_expiring_ingredients` - Check ingredients expiring soon
+- `delete_ingredient` - Completely delete ingredient items
+- `reduce_ingredient_quantity` - Reduce ingredient quantity
+- `update_ingredient` - Modify ingredient information
 
-## 🔄 自動化設置
+## 🔄 Automation Setup
 
-### n8n 工作流程
-設置每日自動檢查過期食材並發送通知：
+### n8n Workflows
+Set up daily automatic checks for expiring ingredients and send notifications:
 
-1. **參考指南**: [n8n 設置指南](N8N_SETUP_GUIDE.md)
-2. **LINE 通知**: [LINE Messaging API 設置](LINE_MESSAGING_API_SETUP.md)
-3. **配置範例**: `n8n_line_config_example.json`
+1. **Reference Guide**: [n8n Setup Guide](N8N_SETUP_GUIDE.md)
+2. **LINE Notifications**: [LINE Messaging API Setup](LINE_MESSAGING_API_SETUP.md)
+3. **Configuration Example**: `n8n_line_config_example.json`
 
-### API 端點
-- `GET /api/expiring-ingredients` - 獲取即將過期的食材（供 n8n 調用）
+### API Endpoints
+- `GET /api/expiring-ingredients` - Get expiring ingredients (for n8n calls)
 
-## 🛠️ 輔助工具
+## 🛠️ Helper Tools
 
-### 獲取 LINE User ID
+### Get LINE User ID
 ```bash
 python3 get_user_id.py
 ```
-向您的 LINE Bot 發送任意訊息，工具會顯示您的 User ID。
+Send any message to your LINE Bot, and the tool will display your User ID.
 
-## 📁 專案結構
+## 📁 Project Structure
 
 ```
 food-agent/
-├── app.py                          # FastAPI 主應用程式
-├── agent.py                        # AI Agent 核心邏輯
-├── tools.py                        # 工具函數集合
-├── parser_chain.py                 # 文字解析器
-├── google_sheets_storage.py        # Google Sheets 整合
-├── get_user_id.py                  # LINE User ID 獲取工具
-├── requirements.txt                # 依賴套件
-├── .env                           # 環境變數（不提交）
-├── .gitignore                     # Git 忽略檔案
-├── GOOGLE_SHEETS_SETUP.md         # Google Sheets 設置指南
-├── LINE_MESSAGING_API_SETUP.md    # LINE Messaging API 設置指南
-├── N8N_SETUP_GUIDE.md             # n8n 工作流程設置指南
-├── n8n_line_config_example.json   # n8n 配置範例
-├── TECHNOLOGY_STACK.md            # 技術架構文檔
-└── README.md                      # 專案說明
+├── app.py                          # FastAPI main application
+├── agent.py                        # AI Agent core logic
+├── tools.py                        # Tool function collection
+├── parser_chain.py                 # Text parser
+├── google_sheets_storage.py        # Google Sheets integration
+├── get_user_id.py                  # LINE User ID retrieval tool
+├── requirements.txt                # Dependencies
+├── .env                           # Environment variables (not committed)
+├── .gitignore                     # Git ignore file
+├── GOOGLE_SHEETS_SETUP.md         # Google Sheets setup guide
+├── LINE_MESSAGING_API_SETUP.md    # LINE Messaging API setup guide
+├── N8N_SETUP_GUIDE.md             # n8n workflow setup guide
+├── n8n_line_config_example.json   # n8n configuration example
+├── TECHNOLOGY_STACK.md            # Technical architecture documentation
+├── README.md                      # Project description (Chinese)
+├── README_EN.md                   # Project description (English)
+└── TECHNOLOGY_STACK_EN.md         # Technical documentation (English)
 ```
 
-## 🧪 測試
+## 🧪 Testing
 
-### 測試 AI Agent
+### Test AI Agent
 ```bash
 python3 test_agent.py
 ```
 
-### 測試 Google Sheets 整合
+### Test Google Sheets Integration
 ```bash
 python3 test_google_sheets.py
 ```
 
-## 📝 日誌功能
+## 📝 Logging
 
-系統會自動記錄詳細的處理過程：
-- 用戶輸入和解析
-- Agent 思考過程
-- 工具調用結果
-- Google Sheets 操作
-- 錯誤處理
+The system automatically records detailed processing:
+- User input and parsing
+- Agent thinking process
+- Tool call results
+- Google Sheets operations
+- Error handling
 
-日誌檔案：`food_agent.log`
+Log file: `food_agent.log`
 
-## 🔒 安全注意事項
+## 🔒 Security Notes
 
-1. **環境變數**: 不要在代碼中硬編碼敏感信息
-2. **Google Sheets**: 定期檢查服務帳戶權限
-3. **LINE API**: 定期更新 Access Token
-4. **數據備份**: 定期備份 Google Sheets 數據
+1. **Environment Variables**: Don't hardcode sensitive information in code
+2. **Google Sheets**: Regularly check service account permissions
+3. **LINE API**: Regularly update Access Tokens
+4. **Data Backup**: Regularly backup Google Sheets data
 
-## 🚨 重要提醒
+## 🚨 Important Reminders
 
-- **LINE Notify 停用**: LINE Notify 服務將於 2025年3月31日停止，請使用 LINE Messaging API
-- **日期處理**: 系統自動使用當前日期（2025年）處理食材到期日
-- **免費額度**: LINE Messaging API 每月有 500 則免費訊息
+- **LINE Notify Discontinuation**: LINE Notify service will be discontinued on March 31, 2025, please use LINE Messaging API
+- **Date Processing**: System automatically uses current date (2025) for ingredient expiration dates
+- **Free Quota**: LINE Messaging API has 500 free messages per month
 
-## 🤝 貢獻
+## 🤝 Contributing
 
-歡迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome!
 
-## 📄 授權
+## 📄 License
 
 MIT License
 
 ---
 
-## 📚 技術文檔
+## 📚 Technical Documentation
 
-- **[技術架構文檔](TECHNOLOGY_STACK.md)** - 詳細的技術棧說明和架構設計
-- **[Google Sheets 設置指南](GOOGLE_SHEETS_SETUP.md)** - Google Sheets 整合設置
-- **[LINE Messaging API 設置指南](LINE_MESSAGING_API_SETUP.md)** - LINE 通知設置
-- **[n8n 工作流程設置指南](N8N_SETUP_GUIDE.md)** - 自動化工作流程設置
+### English Version
+- **[Technical Architecture Documentation](TECHNOLOGY_STACK_EN.md)** - Detailed technical stack and architecture design
+- **[Google Sheets Setup Guide](GOOGLE_SHEETS_SETUP.md)** - Google Sheets integration setup
+- **[LINE Messaging API Setup Guide](LINE_MESSAGING_API_SETUP.md)** - LINE notification setup
+- **[n8n Workflow Setup Guide](N8N_SETUP_GUIDE.md)** - Automation workflow setup
 
-## 📞 支援
+### 中文版 (Chinese Version)
+- **[README (中文)](README.md)** - 專案說明 (中文版)
+- **[技術架構文檔 (中文)](TECHNOLOGY_STACK.md)** - 技術文檔 (中文版)
 
-如果您遇到問題，請檢查：
-1. 環境變數是否正確設置
-2. Google Sheets 權限是否正確
-3. LINE Bot 設定是否完成
-4. 查看日誌檔案了解詳細錯誤信息
-5. 參考技術文檔了解詳細架構
+## 📞 Support
+
+If you encounter issues, please check:
+1. Environment variables are correctly set
+2. Google Sheets permissions are correct
+3. LINE Bot configuration is complete
+4. Check log files for detailed error information
+5. Refer to technical documentation for detailed architecture
