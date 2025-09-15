@@ -221,6 +221,84 @@ def reduce_ingredient_quantity(ingredient_info: str) -> str:
         logger.error(f"❌ 減少食材數量失敗: {str(e)}")
         return f"❌ 減少食材數量失敗: {str(e)}"
 
+def update_ingredient(ingredient_info: str) -> str:
+    """修改食材資訊，格式: 食材ID或名稱,新名稱,新數量,新單位,新到期日,新存放位置"""
+    try:
+        parts = ingredient_info.split(',')
+        if len(parts) < 2:
+            return "❌ 請提供食材ID或名稱，以及要修改的資訊，格式：食材ID或名稱,新名稱,新數量,新單位,新到期日,新存放位置"
+        
+        ingredient_identifier = parts[0].strip()
+        new_name = parts[1].strip() if len(parts) > 1 and parts[1].strip() else None
+        new_quantity = float(parts[2].strip()) if len(parts) > 2 and parts[2].strip() else None
+        new_unit = parts[3].strip() if len(parts) > 3 and parts[3].strip() else None
+        new_expires_at = parts[4].strip() if len(parts) > 4 and parts[4].strip() else None
+        new_location = parts[5].strip() if len(parts) > 5 and parts[5].strip() else None
+        
+        storage = get_google_sheets_storage()
+        
+        # 獲取食材列表來查找目標食材
+        expected_headers = ["ID", "名稱", "數量", "單位", "到期日", "存放位置", "備註", "創建時間", "更新時間"]
+        records = storage.worksheet.get_all_records(expected_headers=expected_headers)
+        
+        target_record = None
+        target_row_index = None
+        
+        # 查找目標食材
+        try:
+            # 嘗試按 ID 查找
+            ingredient_id = int(ingredient_identifier)
+            for i, record in enumerate(records):
+                if int(record.get('ID', 0)) == ingredient_id:
+                    target_record = record
+                    target_row_index = i + 2  # +2 因為第1行是標題，記錄從第2行開始
+                    break
+        except ValueError:
+            # 按名稱查找
+            for i, record in enumerate(records):
+                if record.get('名稱', '').strip() == ingredient_identifier.strip():
+                    target_record = record
+                    target_row_index = i + 2
+                    break
+        
+        if not target_record:
+            return f"❌ 找不到食材：{ingredient_identifier}"
+        
+        # 更新食材資訊
+        updated_fields = []
+        
+        if new_name and new_name != target_record.get('名稱', ''):
+            storage.worksheet.update_cell(target_row_index, 2, new_name)  # 第2列是名稱
+            updated_fields.append(f"名稱: {target_record.get('名稱', '')} → {new_name}")
+        
+        if new_quantity is not None and new_quantity != float(target_record.get('數量', 0)):
+            storage.worksheet.update_cell(target_row_index, 3, new_quantity)  # 第3列是數量
+            updated_fields.append(f"數量: {target_record.get('數量', '')} → {new_quantity}")
+        
+        if new_unit and new_unit != target_record.get('單位', ''):
+            storage.worksheet.update_cell(target_row_index, 4, new_unit)  # 第4列是單位
+            updated_fields.append(f"單位: {target_record.get('單位', '')} → {new_unit}")
+        
+        if new_expires_at and new_expires_at != target_record.get('到期日', ''):
+            storage.worksheet.update_cell(target_row_index, 5, new_expires_at)  # 第5列是到期日
+            updated_fields.append(f"到期日: {target_record.get('到期日', '')} → {new_expires_at}")
+        
+        if new_location and new_location != target_record.get('存放位置', ''):
+            storage.worksheet.update_cell(target_row_index, 6, new_location)  # 第6列是存放位置
+            updated_fields.append(f"存放位置: {target_record.get('存放位置', '')} → {new_location}")
+        
+        # 更新修改時間
+        storage.worksheet.update_cell(target_row_index, 9, date.today().isoformat())  # 第9列是更新時間
+        
+        if updated_fields:
+            logger.info(f"✅ 已修改食材: {target_record.get('名稱', '')} - {', '.join(updated_fields)}")
+            return f"✅ 已修改食材: {target_record.get('名稱', '')}\n" + "\n".join(updated_fields)
+        else:
+            return f"ℹ️ 食材 {target_record.get('名稱', '')} 的資訊沒有變化"
+            
+    except Exception as e:
+        logger.error(f"❌ 修改食材失敗: {str(e)}")
+        return f"❌ 修改食材失敗: {str(e)}"
 
 
 # ==================== 工具初始化 ====================
@@ -256,6 +334,11 @@ reduce_ingredient_quantity_tool = Tool(
     description="減少食材數量，格式：食材名稱,數量 或 食材ID,數量。如果數量變為0則自動刪除該食材"
 )
 
+update_ingredient_tool = Tool(
+    name="update_ingredient",
+    func=update_ingredient,
+    description="修改食材資訊，格式：食材ID或名稱,新名稱,新數量,新單位,新到期日,新存放位置。可以只修改部分欄位"
+)
 
 
 # 所有可用工具列表
@@ -264,5 +347,6 @@ AVAILABLE_TOOLS = [
     get_ingredient_list_tool,
     check_expiring_ingredients_tool,
     delete_ingredient_tool,
-    reduce_ingredient_quantity_tool
+    reduce_ingredient_quantity_tool,
+    update_ingredient_tool
 ]
