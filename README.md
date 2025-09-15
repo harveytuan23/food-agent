@@ -123,6 +123,7 @@ food-agent/
 ├── LINE_MESSAGING_API_SETUP.md    # LINE Messaging API 設置指南
 ├── N8N_SETUP_GUIDE.md             # n8n 工作流程設置指南
 ├── n8n_line_config_example.json   # n8n 配置範例
+├── TECHNOLOGY_STACK.md            # 技術架構文檔
 └── README.md                      # 專案說明
 ```
 
@@ -172,6 +173,13 @@ MIT License
 
 ---
 
+## 📚 技術文檔
+
+- **[技術架構文檔](TECHNOLOGY_STACK.md)** - 詳細的技術棧說明和架構設計
+- **[Google Sheets 設置指南](GOOGLE_SHEETS_SETUP.md)** - Google Sheets 整合設置
+- **[LINE Messaging API 設置指南](LINE_MESSAGING_API_SETUP.md)** - LINE 通知設置
+- **[n8n 工作流程設置指南](N8N_SETUP_GUIDE.md)** - 自動化工作流程設置
+
 ## 📞 支援
 
 如果您遇到問題，請檢查：
@@ -179,3 +187,4 @@ MIT License
 2. Google Sheets 權限是否正確
 3. LINE Bot 設定是否完成
 4. 查看日誌檔案了解詳細錯誤信息
+5. 參考技術文檔了解詳細架構
